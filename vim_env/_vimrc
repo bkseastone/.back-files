@@ -1,0 +1,48 @@
+set showcmd
+set showmode
+set ruler
+syntax on
+set nu
+set nowrap
+set hlsearch
+set incsearch
+set ignorecase
+set cursorline
+set autoindent
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set autochdir
+set expandtab
+set smarttab
+set showmatch
+
+colorscheme ThemerVim
+
+"C，C++ 按F5编译运行
+map <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+    exec "w"
+    if &filetype == 'c'
+        exec "!gcc % -o %<"
+        exec "! ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -o %<"
+        exec "! ./%<"
+    elseif &filetype == 'sh'
+        :!sudo bash ./%
+    endif
+endfunc
+"C,C++的调试
+map <C-F5> :call Rungdb()<CR>
+func! Rungdb()
+    exec "w"
+    if &filetype == 'c'
+        exec "!gcc % -g -o %<"
+        exec "!gdb -tui ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -g -o %<"
+        exec "!gdb -tui ./%<"
+    endif
+endfunc
+autocmd BufNewFile *.cpp 0r ~/.vim/template/simple.cpp
